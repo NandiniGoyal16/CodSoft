@@ -11,6 +11,7 @@ bool subTrigger = false;
 Calculator::Calculator(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Calculator)
+    , memoryValue(0.0)
 {
     ui->setupUi(this);
     ui->Display->setText(QString::number(calcVal));
@@ -37,6 +38,15 @@ Calculator::Calculator(QWidget *parent)
 
     connect(ui->ChangeSign, SIGNAL(released()), this,
             SLOT(ChangeNumberSign()));
+
+    connect(ui->MemAdd, SIGNAL(released()), this,
+            SLOT(MemoryAdd()));
+    connect(ui->MemClear, SIGNAL(released()), this,
+            SLOT(MemorySubtract()));
+    connect(ui->MemGet, SIGNAL(released()), this,
+            SLOT(MemoryRecall()));
+    connect(ui->Clear, SIGNAL(released()), this,
+            SLOT(ClearDisplay()));
 
 }
 
@@ -83,6 +93,12 @@ void Calculator::EqualButtonPressed(){
     double solution = 0.0;
     QString displayVal = ui->Display->text();
     double dblDisplayVal = displayVal.toDouble();
+
+    if (divTrigger && dblDisplayVal == 0.0) {
+        ui->Display->setText("ERROR");
+        return;
+    }
+
     if(addTrigger || subTrigger || multTrigger || divTrigger){
         if(addTrigger){
             solution = calcVal + dblDisplayVal;
@@ -99,14 +115,34 @@ void Calculator::EqualButtonPressed(){
 
 void Calculator::ChangeNumberSign(){
     QString displayVal = ui->Display->text();
-    QRegularExpression reg("[-]?[0-9.]*");
-    if(reg.match(displayVal).hasMatch()){
+    static QRegularExpression reg("[-]?[0-9.]*");
+    if (reg.match(displayVal).hasMatch()) {
         double dblDisplayVal = displayVal.toDouble();
         double dblDisplayValSign = -1 * dblDisplayVal;
         ui->Display->setText(QString::number(dblDisplayValSign));
 
     }
 
+}
+
+void Calculator::MemoryAdd(){
+    QString displayVal = ui->Display->text();
+    double dblDisplayVal = displayVal.toDouble();
+    memoryValue += dblDisplayVal;
+}
+
+void Calculator::MemorySubtract(){
+    QString displayVal = ui->Display->text();
+    double dblDisplayVal = displayVal.toDouble();
+    memoryValue -= dblDisplayVal;
+}
+
+void Calculator::MemoryRecall(){
+    ui->Display->setText(QString::number(memoryValue));
+}
+
+void Calculator::ClearDisplay(){
+    ui->Display->setText("0");
 }
 
 
