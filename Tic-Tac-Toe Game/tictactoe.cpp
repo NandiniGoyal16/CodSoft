@@ -1,14 +1,11 @@
 #include <windows.h>
 #include <iostream>
 
-
 using namespace std;
-
 
 char GameBoard[] = {'a','b','c','d','e','f','g','h','i'};
 char token = 'X';
 char winner = 'L';
-
 
 #define tic1 1
 #define tic2 2
@@ -314,6 +311,17 @@ else if (GameBoard[0] == '0' && GameBoard[1] == '0' && GameBoard[2] == '0' ||
     winner = '0';
     MessageBoxW(hWnd, L"Player 2 (0) wins!", L"Winner", MB_OK);
 }
+
+    bool boardFilled = true;
+    for (int i = 0; i < 9; ++i) {
+        if (GameBoard[i] != 'X' && GameBoard[i] != '0') {
+            boardFilled = false;
+            break;
+        }
+    }
+    if (boardFilled && winner == 'L') {
+        MessageBoxW(hWnd, L"The game is a tie!", L"Tie Game", MB_OK);
+    }
 
             break;
         }
