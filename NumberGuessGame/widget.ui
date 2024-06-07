@@ -16,9 +16,9 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>90</x>
      <y>30</y>
-     <width>191</width>
+     <width>351</width>
      <height>21</height>
     </rect>
    </property>
@@ -28,7 +28,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Guess My Number</string>
+    <string>Guess My Number between 1 to 100</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
